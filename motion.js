@@ -14,15 +14,16 @@ function createTorinoMotion(root, reduced=false){
  const detailStage=detail.querySelector('.detail-stage'),object=detail.querySelector('.detail-product'),chapters=[...detail.querySelectorAll('[data-chapter]')],chapterButtons=[...detail.querySelectorAll('[data-jump-chapter]')];
  const railStage=rail.querySelector('.collection-stage'),viewport=rail.querySelector('.collection-window'),track=rail.querySelector('.collection-track'),panels=[...rail.querySelectorAll('.collection-panel')],railButtons=[...rail.querySelectorAll('[data-jump-rail]')];
  const wordSpans=[...words.querySelectorAll('[data-word]')],craftImage=craft.querySelector('.craft-image');
+ const railFlat=()=>reduced||getComputedStyle(railStage).position!=='sticky';
  function schedule(){if(!frame&&!disposed)frame=requestAnimationFrame(draw);}
  function draw(){
   frame=0;if(disposed)return;
   const small=mobile(),vh=innerHeight;
-  const hp=reduced?0:scrollProgress(hero,heroStage),dp=reduced?0:scrollProgress(detail,detailStage),rp=reduced||small?0:scrollProgress(rail,railStage);
+  const hp=reduced?0:scrollProgress(hero,heroStage),dp=reduced?0:scrollProgress(detail,detailStage),rp=reduced||railFlat()?0:scrollProgress(rail,railStage);
   const wr=words.getBoundingClientRect(),cr=craft.getBoundingClientRect();
   const wp=clamp((vh*.8-wr.top)/Math.max(1,wr.height+vh*.2)),cp=clamp((vh-cr.top)/(vh+cr.height));
   const padding=getComputedStyle(viewport),railWidth=viewport.clientWidth-parseFloat(padding.paddingLeft)-parseFloat(padding.paddingRight),maxX=Math.max(0,track.scrollWidth-railWidth);
-  const actualRail=reduced||small?clamp(viewport.scrollLeft/Math.max(1,maxX)):rp;
+  const actualRail=reduced||railFlat()?clamp(viewport.scrollLeft/Math.max(1,maxX)):rp;
   const chapter=Math.min(2,Math.floor(dp*3)),flatDetail=getComputedStyle(detailStage).position!=='sticky';
   if(!reduced){
    const spread=clamp(hp/.72),side=(small?16:32)*(1-spread),top=(small?12:7)*(1-spread),bottom=(small?17:8)*(1-spread);
@@ -51,11 +52,11 @@ function createTorinoMotion(root, reduced=false){
  }
  chapterButtons.forEach((button,i)=>on(button,'click',()=>jumpScene(detail,detailStage,(i+.35)/3)));
  function jumpRail(i){
-  if(mobile()||reduced){const distance=panels[i].getBoundingClientRect().left-panels[0].getBoundingClientRect().left;viewport.scrollTo({left:distance,behavior:reduced?'instant':'smooth'});}
+  if(railFlat()){const distance=panels[i].getBoundingClientRect().left-panels[0].getBoundingClientRect().left;viewport.scrollTo({left:distance,behavior:reduced?'instant':'smooth'});}
   else jumpScene(rail,railStage,i/2);
  }
  railButtons.forEach((button,i)=>on(button,'click',()=>jumpRail(i)));
- on(rail,'focusin',event=>{if(mobile()||reduced)return;const panel=event.target.closest('.collection-panel');if(panel){const i=panels.indexOf(panel);jumpScene(rail,railStage,i/2);}});
+ on(rail,'focusin',event=>{if(railFlat())return;const panel=event.target.closest('.collection-panel');if(panel){const i=panels.indexOf(panel);jumpScene(rail,railStage,i/2);}});
  root.querySelectorAll('.magnetic').forEach(button=>{
   on(button,'pointermove',event=>{if(reduced||mobile()||event.pointerType==='touch')return;const r=button.getBoundingClientRect();button.style.transform=`translate(${(event.clientX-r.left-r.width/2)*.08}px,${(event.clientY-r.top-r.height/2)*.13}px)`;});
   on(button,'pointerleave',()=>{button.style.transform='';});

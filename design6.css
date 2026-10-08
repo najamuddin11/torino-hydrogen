@@ -7,3 +7,4 @@
 .film-stage{height:calc(100svh - 116px)}.header.scrolled~main .film-stage{height:calc(100svh - 72px)}
 @media(max-width:760px){.film-stage{height:calc(100svh - 106px)}}
 .edit-tabs button[aria-pressed="true"]{border-bottom:2px solid var(--brown);font-weight:500}
+/* mobile-pin-rail */@media(max-width:760px){.collection-scroll{height:300svh}.collection-stage{position:sticky;top:72px;height:calc(100svh - 72px);min-height:560px;padding:24px 0 18px}.collection-topline{margin-bottom:18px}.collection-topline h2{font-size:32px}.rail-navigation{margin-top:14px}.collection-window{overflow:hidden;scroll-snap-type:none;height:auto;flex:1;min-height:0}.collection-track{transform:translateX(var(--rail-x,0px))!important;height:100%}.collection-panel{height:100%;grid-template-rows:minmax(0,1fr) auto;gap:14px}.panel-copy h3{font-size:30px;margin:0 0 10px}.rail-bottom{padding-top:16px}}
