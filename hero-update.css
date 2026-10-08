@@ -1,0 +1,6 @@
+/* Hero photograph update: real fixed desktop background, mobile sticky image fallback. */
+.film-photo[data-fixed-hero]{background-image:url('assets/adfaca6ae4c4.jpg');background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
+.film-photo[data-fixed-hero]>img{opacity:0;transform:none!important;will-change:auto}
+@media(max-width:760px),(hover:none){.film-photo[data-fixed-hero]{background-image:none;background-attachment:scroll}.film-photo[data-fixed-hero]>img{opacity:1;object-position:center center}}
+.reduce-motion .film-photo[data-fixed-hero]{background-attachment:scroll}
+@media(prefers-reduced-motion:reduce){.film-photo[data-fixed-hero]{background-attachment:scroll}}
